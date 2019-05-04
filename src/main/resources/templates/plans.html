@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/base :: head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="~{fragments/base :: header}">
+</div>
+<div class="container">
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Request date</th>
+                <th>End date</th>
+                <th>Employee</th>
+                <th>Products</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="plan: ${plans}">
+                <tr>
+                    <td th:text="${plan.requestDate}"></td>
+                    <td th:text="${plan.endDate}"></td>
+                    <td th:text="${plan.employee.name} + ' '+ ${plan.employee.surname}"></td>
+                    <td>
+                        <table class="table">
+                            <tbody>
+                            <th:block th:each="productPlan: ${plan.plannedProducts}">
+                                <tr>
+                                    <td th:text="${productPlan.product.name}"></td>
+                                    <td th:text="${productPlan.count} +' '+${productPlan.unit.configType}"></td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+        <a href="/order/new" class="btn btn-primary">Make production orders</a>
+    </div>
+</div>
+<div th:replace="fragments/base :: footer"></div>
+</body>
+</html>

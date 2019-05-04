@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/base :: head">
+    <meta charset="UTF-8">
+    <title>Products specifications</title>
+</head>
+<body>
+<div th:replace="fragments/base :: header"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Model</th>
+                    <th>Details</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="product: ${products}">
+                    <tr>
+                        <td th:text="${product.getName()}"></td>
+                        <td th:text="${product.getModel()}"></td>
+                        <td>
+                            <th:block th:each="detail : ${product.getDetails()}">
+                                <span th:text="${detail.getDetail().getName()} + ' : ' + ${detail.getDetail().getQuantity()}"></span>
+                            </th:block>
+                        </td>
+                        <td>
+                            <a th:href="'/product/'+${product.getId()}" class="btn btn-primary">More</a>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+<div th:replace="fragments/base :: footer"></div>
+</body>
+</html>

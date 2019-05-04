@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/base :: head">
+    <meta charset="UTF-8">
+    <title>Requests</title>
+</head>
+<body>
+<div th:replace="fragments/base :: header"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <ul class="list-group" id="requestList">
+
+            </ul>
+        </div>
+        <div class="col-md-5">
+            <div class="justify-content-center">
+                <form id="request-form" class="form-group">
+                    <select name="name" class="form-control">
+                        <th:block th:each="product: ${products}">
+                            <option th:value="${product.getId()}" th:text="${product.getName()}"></option>
+                        </th:block>
+                    </select>
+                    <label>
+                        Quantity
+                        <input class="form-control" name="qty" type="number"/>
+                    </label>
+                    <button id="add-request" class="btn btn-primary">Add</button>
+                </form>
+                <button id="submit-request" class="btn btn-primary">Submit requests</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/base :: footer"></div>
+</body>
+</html>

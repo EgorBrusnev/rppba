@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/base :: head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="fragments/base :: header"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 align-self-center">
+            <h3>Order</h3>
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Model</th>
+                    <th>Product count</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td th:text="${order.product.name}"></td>
+                    <td th:text="${order.product.model}"></td>
+                    <td th:text="${order.productQty}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <h3>Details</h3>
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Material</th>
+                    <th>Price per unit</th>
+                    <th>Quantity</th>
+                    <th>Stage</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="detail: ${details}">
+                    <tr>
+                        <td th:text="${detail.name}"></td>
+                        <td th:text="${detail.material}"></td>
+                        <td th:text="${detail.pricePerUnit}"></td>
+                        <td th:text="${detail.qtyForProduct}+' ('+${detail.totalQty}+')'"></td>
+                        <td th:text="${detail.stageName}+' ('+${detail.stageDuration}+' '+${detail.stageDurationUnit.getExt()}+')'"></td>
+                        <td class="text-danger">
+                            <th:block th:if="not ${detail.enoughQty}">
+                                Not enough quantity! Please make request for more details
+                                <a href="/detail" class="btn">Request detail</a>
+                            </th:block>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4 align-self-center">
+            <div class="form-group">
+                <form action="/order/plan" method="post">
+                    <input type="hidden" name="id" th:value="${orderId}">
+                    <label>
+                        Plan
+                        <!--<input name="date" class="form-control" type="date">-->
+                        <select class="form-control" name="plan">
+                            <th:block th:each="plan: ${plans}">
+                                <option th:value="${plan.id}" th:text="${plan.endDate}"></option>
+                            </th:block>
+                        </select>
+                    </label>
+                    <button th:disabled="${isReady}" type="submit" id="calculate" class="btn btn-primary">
+                        Submit plan
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/base :: footer"></div>
+<script th:src="@{/js/planOrder.js}"></script>
+</body>
+</html>

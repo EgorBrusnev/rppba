@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/base :: head">
+    <meta charset="UTF-8">
+    <title th:text="${product.getName}"></title>
+</head>
+<body>
+<div th:replace="fragments/base :: header"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Name
+                    <input class="form-control" type="text" th:value="${product.getName()}">
+                </label>
+                <label>Model
+                    <input class="form-control" type="text" th:value="${product.getModel()}">
+                </label>
+                <a th:href="'/product/'+${product.getId()}+'/stages'" class="btn btn-primary">Stages</a>
+                <h3 class="h3">Details:</h3>
+                <div class="container">
+                    <th:block th:each="detail : ${product.getDetails()}">
+                        <form class="form-group" action="/detail" method="post">
+                            <div class="justify-content-center">
+                                <input name="id" type="hidden" th:value="${detail.getDetail().id}">
+                                <label>
+                                    Name
+                                    <input name="name" class="form-control" type="text"
+                                           th:value="${detail.getDetail().getName()}">
+                                </label>
+                                <label>
+                                    Quantity
+                                    <input name="quantity" class="form-control" type="text"
+                                           th:value="${detail.getDetail().getQuantity()}">
+                                </label>
+                                <label>UnitQty
+                                    <select name="unitQty" class="form-control"
+                                            th:value="${detail.getDetail().getUnitQty().getConfigType()}">
+                                        <th:block th:each="unit: ${ext.get('unit')}">
+                                            <option th:value="${detail.getDetail().getUnitQty().id}"
+                                                    th:text="${unit.getConfigType()}"></option>
+                                        </th:block>
+                                    </select>
+                                </label>
+                                <label>
+                                    Size
+                                    <input name="size" class="form-control" type="text"
+                                           th:value="${detail.getDetail().getSize()}">
+                                </label>
+                                <label>
+                                    <input name="unitSize" class="form-control" type="text"
+                                           th:value="${detail.getDetail().getUnitSize()}">
+                                </label>
+                                <label>
+                                    Price per unit
+                                    <input name="unitPrice" class="form-control" type="text"
+                                           th:value="${detail.getDetail().getUnitPrice()}">
+                                </label>
+                                <label>
+                                    <select name="currencyCode" class="form-control"
+                                            th:value="${detail.getDetail().getCurrency().getName()}">
+                                        <th:block th:each="currency: ${ext.get('currency')}">
+                                            <option th:value="${currency.id}" th:text="${currency.getName()}"></option>
+                                        </th:block>
+                                    </select>
+                                </label>
+                                <br/>
+                                <label>
+                                    Material
+                                    <input name="material" class="form-control" type="text"
+                                           th:value="${detail.getDetail().getMaterial()}">
+                                </label>
+                                <input type="submit" class="btn btn-primary" value="update">
+                            </div>
+                        </form>
+                        <hr/>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+<div th:replace="fragments/base :: footer"></div>
+<script>
+    $("form").submit(function (e) {
+        window.location.reload(true);
+    })
+</script>
+</body>
+</html>
