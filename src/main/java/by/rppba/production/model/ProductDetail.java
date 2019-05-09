@@ -21,6 +21,17 @@ public class ProductDetail {
     private Detail detail;
     private String unit;
 
+    public ProductDetail() {
+    }
+
+    public ProductDetail(Product product, int detailQty, Stage stage, Detail detail, String unit) {
+        this.product = product;
+        this.detailQty = detailQty;
+        this.stage = stage;
+        this.detail = detail;
+        this.unit = unit;
+    }
+
     public int getId() {
         return id;
     }

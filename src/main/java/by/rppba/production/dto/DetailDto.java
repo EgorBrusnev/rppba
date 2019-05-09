@@ -2,8 +2,10 @@ package by.rppba.production.dto;
 
 import by.rppba.production.util.Time;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonAutoDetect
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DetailDto {
     private int id;
     private String name;

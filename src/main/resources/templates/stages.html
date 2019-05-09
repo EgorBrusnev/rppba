@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="fragments/base :: head"/>
+    <meta charset="UTF-8">
+    <title>Stages</title>
+</head>
+<body>
+<div th:replace="fragments/base :: header"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Stage number</th>
+                        <th>Stage time</th>
+                        <th>Detail quantity</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:each="stage: ${stages}">
+                        <tr>
+                            <td th:text="${stage.name}"></td>
+                            <td th:text="${stage.stageNumber}"></td>
+                            <td th:text="${stage.time}+' '+${stage.timeUnit.getExt()}"></td>
+                            <td th:text="${stage.quantity}+' '+${stage.unitQty}"></td>
+                            <th class="form-group">
+                                <form th:action="'/stage/'+${stage.id}+'/delete'" method="post">
+                                    <input type="submit" class="btn btn-primary" value="Remove detail">
+                                </form>
+                            </th>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <form class="form-group" action="/stage" method="post">
+                <label>Name
+                    <input class="form-control" type="text" name="name"/>
+                </label>
+                <label>Stage number
+                    <input class="form-control" type="number" name="stageNumber"/>
+                </label>
+                <label>Time
+                    <input class="form-control" type="number" name="time"/>
+                    <label>Unit
+                        <select class="form-control" name="timeUnit">
+                            <option value="SECOND">sec</option>
+                            <option value="MINUTE">min</option>
+                            <option value="HOUR">hour</option>
+                            <option value="DAY">day</option>
+                            <option value="WEEK">week</option>
+                        </select>
+                    </label>
+                </label>
+                <label>Quantity
+                    <input class="form-control" type="number" name="quantity"/>
+                    <label>Size unit
+                        <input class="form-control" type="text" name="unitQty"/>
+                    </label>
+                </label>
+                <input type="submit" value="Add stage">
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/base :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="fragments/base :: head"/>
+    <meta charset="UTF-8">
+    <title>Details</title>
+</head>
+<body>
+<div th:replace="fragments/base :: header"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Material</th>
+                        <th>Price per unit</th>
+                        <th>Size</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:each="detail: ${details}">
+                        <tr>
+                            <td th:text="${detail.name}"></td>
+                            <td th:text="${detail.material}"></td>
+                            <td th:text="${detail.unitPrice}"></td>
+                            <td th:text="${detail.size}+' '+${detail.unitSize}"></td>
+                            <th class="form-group">
+                                <form th:action="'/detail/'+${detail.id}+'/delete'" method="post">
+                                    <input type="submit" class="btn btn-primary" value="Remove detail">
+                                </form>
+                            </th>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <form class="form-group" action="/detail" method="post">
+                <label>Name
+                    <input class="form-control" type="text" name="name"/>
+                </label>
+                <label>Material
+                    <input class="form-control" type="text" name="material"/>
+                </label>
+                <label>Quantity
+                    <input class="form-control" type="number" name="quantity"/>
+                    <label>Unit
+                        <select class="form-control" name="unitQty">
+                            <th:block th:each="unit: ${map.get('unit')}">
+                                <option th:value="${unit.id}" th:text="${unit.configType}"></option>
+                            </th:block>
+                        </select>
+                    </label>
+                </label>
+                <label>Size
+                    <input class="form-control" type="text" name="size"/>
+                    <label>Size unit
+                        <input class="form-control" type="text" name="unitSize"/>
+                    </label>
+                </label>
+                <label>Price per Unit
+                    <input class="form-control" type="text" name="unitPrice"/>
+                    <label>Currency
+                        <select class="form-control" name="currencyCode">
+                            <th:block th:each="unit: ${map.get('currency')}">
+                                <option th:value="${unit.id}" th:text="${unit.name}"></option>
+                            </th:block>
+                        </select>
+                    </label>
+                </label>
+                <label>Producer
+                    <select class="form-control" name="producer">
+                        <th:block th:each="unit: ${producers}">
+                            <option th:value="${unit.id}" th:text="${unit.company}"></option>
+                        </th:block>
+                    </select>
+                </label>
+                <input type="submit" value="Add detail">
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/base :: footer"></div>
+</body>
+</html>

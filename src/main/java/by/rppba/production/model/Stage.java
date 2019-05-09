@@ -1,9 +1,11 @@
 package by.rppba.production.model;
 
+import by.rppba.production.dto.StageDto;
 import by.rppba.production.util.Time;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 import javax.persistence.*;
+import java.util.List;
 
 @JsonAutoDetect
 @Entity
@@ -21,6 +23,15 @@ public class Stage {
     @Enumerated(EnumType.STRING)
     private Time stageTimeUnit;
     private int stageNumber;
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    private List<ProductDetail> productDetails;
+    @OneToMany(cascade = CascadeType.REMOVE)
+    private List<ExecutableOrder> executableOrders;
+
+    public StageDto toDto() {
+        return new StageDto(id, name, stageNumber, stageTime, stageTimeUnit, detailQty, unitQty);
+    }
 
     public int getId() {
         return id;
@@ -76,5 +87,21 @@ public class Stage {
 
     public void setStageTimeUnit(Time stageTimeUnit) {
         this.stageTimeUnit = stageTimeUnit;
+    }
+
+    public List<ProductDetail> getProductDetails() {
+        return productDetails;
+    }
+
+    public void setProductDetails(List<ProductDetail> productDetails) {
+        this.productDetails = productDetails;
+    }
+
+    public List<ExecutableOrder> getExecutableOrders() {
+        return executableOrders;
+    }
+
+    public void setExecutableOrders(List<ExecutableOrder> executableOrders) {
+        this.executableOrders = executableOrders;
     }
 }

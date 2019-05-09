@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @JsonAutoDetect
@@ -30,6 +31,12 @@ public class Detail {
     @JoinColumn(name = "unit_qty")
     private UnitQty unitQty;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Attitude> attitude;
+    //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "detail")
+//    private List<StageDetailCostID> stageDetailCostID;
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "detail")
+    private List<ProductDetail> productDetail;
 
     public int getId() {
         return id;
@@ -109,5 +116,21 @@ public class Detail {
 
     public void setUnitQty(UnitQty unitQty) {
         this.unitQty = unitQty;
+    }
+
+    public List<ProductDetail> getProductDetail() {
+        return productDetail;
+    }
+
+    public void setProductDetail(List<ProductDetail> productDetail) {
+        this.productDetail = productDetail;
+    }
+
+    public List<Attitude> getAttitude() {
+        return attitude;
+    }
+
+    public void setAttitude(List<Attitude> attitude) {
+        this.attitude = attitude;
     }
 }

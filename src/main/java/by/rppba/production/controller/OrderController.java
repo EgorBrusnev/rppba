@@ -12,6 +12,9 @@ import by.rppba.production.util.Status;
 import by.rppba.production.util.exception.NotEnoughTimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +41,20 @@ public class OrderController {
     @GetMapping
     public String allOrders(Model model) {
         model.addAttribute("orders", orderService.getAll());
-        model.addAttribute("newStatus", "Progress");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        GrantedAuthority grantedAuthority = auth.getAuthorities().stream().findFirst().get();
+        String status;
+        switch (grantedAuthority.getAuthority()) {
+            case "MASTER_ASSAMBLY":
+                status = "Progress";
+                break;
+            case "MASTER_SHOP":
+                status = "Done";
+                break;
+            default:
+                status = "";
+        }
+        model.addAttribute("newStatus", status);
         return "ordersAll";
     }
 

@@ -17,6 +17,9 @@ public class Attitude {
     private int quantity;
     private String unit;
 
+    public Attitude() {
+    }
+
     public Attitude(Detail detail, DetailStatus status, int quantity, String unit) {
         this.detail = detail;
         this.status = status;

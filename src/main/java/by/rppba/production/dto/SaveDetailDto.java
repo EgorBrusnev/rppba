@@ -1,6 +1,7 @@
 package by.rppba.production.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonAutoDetect
 public class SaveDetailDto {
@@ -13,6 +14,7 @@ public class SaveDetailDto {
     private int currencyCode;
     private int quantity;
     private int unitQty;
+    private int producer;
 
     public int getId() {
         return id;
@@ -84,5 +86,13 @@ public class SaveDetailDto {
 
     public void setUnitQty(int unitQty) {
         this.unitQty = unitQty;
+    }
+
+    public int getProducer() {
+        return producer;
+    }
+
+    public void setProducer(int producer) {
+        this.producer = producer;
     }
 }

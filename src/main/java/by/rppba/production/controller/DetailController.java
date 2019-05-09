@@ -2,7 +2,6 @@ package by.rppba.production.controller;
 
 import by.rppba.production.dto.RequestDto;
 import by.rppba.production.dto.SaveDetailDto;
-import by.rppba.production.model.Detail;
 import by.rppba.production.service.DetailService;
 import by.rppba.production.service.ExtenstionsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +29,29 @@ public class DetailController {
         return "details";
     }
 
+    @GetMapping("/catalog")
+    public String detailCatalog(Model model) {
+        model.addAttribute("producers", detailService.getProducers());
+        model.addAttribute("details", detailService.getAllDetails());
+        model.addAttribute("map", extenstionsService.getAllAsMap());
+        return "detailCatalog";
+    }
+
     @PostMapping
-    @ResponseBody
-    public void saveDetail(SaveDetailDto detail) {
+    public String saveDetail(SaveDetailDto detail) {
         detailService.saveDetail(detail);
+        return "redirect:/detail/catalog";
     }
 
     @PostMapping("/request")
     @ResponseBody
     public void requestDetails(RequestDto requestDto) {
         detailService.requestDetail(requestDto.getDetailId(), requestDto.getCount(), requestDto.getUnit());
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteDetail(@PathVariable int id, Model model) {
+        detailService.removeDetail(id);
+        return "redirect:/detail/catalog";
     }
 }

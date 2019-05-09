@@ -5,7 +5,7 @@
 //     e.preventDefault();
 // });
 
-$("form").submit(function (e) {
-    window.location.reload();
-    console.log("submit");
-});
+// $("form").submit(function (e) {
+//     window.location.reload();
+//     console.log("submit");
+// });

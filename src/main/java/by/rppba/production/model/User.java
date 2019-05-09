@@ -9,7 +9,7 @@ public class User {
     private int id;
     private String username;
     private String password;
-    @OneToOne(targetEntity = Employee.class)
+    @OneToOne(targetEntity = Employee.class, cascade = CascadeType.ALL)
     @JoinColumn(unique = true, name = "employee_id")
     private Employee employee;
 
