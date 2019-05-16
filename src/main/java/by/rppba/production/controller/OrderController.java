@@ -10,6 +10,8 @@ import by.rppba.production.service.PlanService;
 import by.rppba.production.service.ProductService;
 import by.rppba.production.util.Status;
 import by.rppba.production.util.exception.NotEnoughTimeException;
+import by.rppba.production.util.exception.TooMuchProductsException;
+import by.rppba.production.util.exception.WrongOrderException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -20,8 +22,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/order")
@@ -81,30 +87,40 @@ public class OrderController {
         ProductionOrder order = orderService.getOrderById(id);
         List<DetailDto> details = orderService.getDetailDto(order);
         List<Plan> plans = planService.getAllPlans();
+        int totalCount = details.stream().mapToInt(DetailDto::getQtyForProduct).sum();
+        Double totalTime = details.stream().mapToDouble(it -> it.getStageDuration() * it.getStageDurationUnit().getDivider()).sum() / 3600;
+        String totalTimeStr = new DecimalFormat("#.###").format(totalTime);
         boolean isReady = details.stream().anyMatch(it -> !it.isEnoughQty());
         model.addAttribute("order", order);
         model.addAttribute("details", details);
         model.addAttribute("orderId", id);
         model.addAttribute("isReady", isReady);
         model.addAttribute("plans", plans);
+//        model.addAttribute("totalCount", totalCount);
+//        model.addAttribute("totalTime", totalTimeStr);
         return "planOrder";
     }
 
     @PostMapping(value = "/plan", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    @ResponseBody
-    public void calculatePlan(NewOrderDto orderDto) throws NotEnoughTimeException {
-        orderService.createNewOrder(orderDto);
+    public String calculatePlan(NewOrderDto orderDto) throws NotEnoughTimeException, WrongOrderException, TooMuchProductsException {
+        if (orderService.isRightOrder(orderDto)) {
+            orderService.createNewOrder(orderDto);
+        } else {
+            throw new TooMuchProductsException();
+        }
+        return "redirect:/order/plan";
     }
 
     @GetMapping("/{id}/progress")
     public RedirectView changeInProgress(@PathVariable int id) {
-        orderService.changeStatus(id, Status.IN_PROGRESS, -1);
+        orderService.changeStatus(id, Status.IN_PROGRESS);
         return new RedirectView("/order");
     }
 
-    @PostMapping("/{id}/done")
-    public void changeDone(@PathVariable int id) {
-        orderService.changeStatus(id, Status.DONE, -1);
+    @GetMapping("/{id}/done")
+    public String changeDone(@PathVariable int id) {
+        orderService.changeStatus(id, Status.DONE);
+        return "redirect:/order";
         // send to store
     }
 }

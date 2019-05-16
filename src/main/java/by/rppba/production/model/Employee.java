@@ -13,8 +13,12 @@ public class Employee {
     @JoinColumn(name = "position")
     private Position position;
     private int authCode;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user")
     private User user;
+    @ManyToOne(targetEntity = Stage.class)
+    @JoinColumn(name = "stage")
+    private Stage stage;
 
     public int getId() {
         return id;

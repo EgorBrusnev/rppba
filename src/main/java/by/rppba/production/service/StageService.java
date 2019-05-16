@@ -22,8 +22,8 @@ public class StageService {
         Stage stage = new Stage();
         stage.setId(dto.getId());
         stage.setName(dto.getName());
-        stage.setDetailQty(dto.getQuantity());
-        stage.setUnitQty(dto.getUnitQty());
+//        stage.setDetailQty(dto.getQuantity());
+//        stage.setUnitQty(dto.getUnitQty());
         stage.setStageTime(dto.getTime());
         stage.setStageTimeUnit(dto.getTimeUnit());
         stage.setStageNumber(dto.getStageNumber());

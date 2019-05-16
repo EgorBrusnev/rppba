@@ -10,18 +10,19 @@ public class DetailDto {
     private int id;
     private String name;
     private String material;
-    private int totalQty;
-    private int qtyForProduct;
-    private double pricePerUnit;
+    private Integer totalQty;
+    private Integer qtyForProduct;
+    private Double pricePerUnit;
     private String stageName;
-    private int stageDuration;
+    private Integer stageDuration;
     private Time stageDurationUnit;
     private boolean isEnoughQty;
+    private boolean isEmptyStage;
 
     public DetailDto() {
     }
 
-    public DetailDto(int id, String name, String material, int totalQty, int qtyForProduct, double pricePerUnit, String stageName, int stageDuration, Time stageDurationUnit) {
+    public DetailDto(Integer id, String name, String material, Integer totalQty, Integer qtyForProduct, Double pricePerUnit, String stageName, Integer stageDuration, Time stageDurationUnit) {
         this.id = id;
         this.name = name;
         this.material = material;
@@ -32,6 +33,16 @@ public class DetailDto {
         this.stageDuration = stageDuration;
         this.stageDurationUnit = stageDurationUnit;
         this.isEnoughQty = qtyForProduct <= totalQty;
+        isEmptyStage = false;
+    }
+
+    public DetailDto(Integer qtyForProduct, String stageName, Integer stageDuration, Time stageDurationUnit) {
+        this.qtyForProduct = qtyForProduct;
+        this.stageName = stageName;
+        this.stageDuration = stageDuration;
+        this.stageDurationUnit = stageDurationUnit;
+        this.totalQty = 0;
+        isEmptyStage = true;
     }
 
     public int getId() {
@@ -113,5 +124,13 @@ public class DetailDto {
 
     public void updateEnoughQty() {
         this.isEnoughQty = this.qtyForProduct <= this.totalQty;
+    }
+
+    public boolean isEmptyStage() {
+        return isEmptyStage;
+    }
+
+    public void setEmptyStage(boolean emptyStage) {
+        isEmptyStage = emptyStage;
     }
 }

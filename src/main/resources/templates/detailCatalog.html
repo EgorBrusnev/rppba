@@ -26,7 +26,7 @@
                         <tr>
                             <td th:text="${detail.name}"></td>
                             <td th:text="${detail.material}"></td>
-                            <td th:text="${detail.unitPrice}"></td>
+                            <td th:text="${detail.unitPrice} + ' ' + ${detail.currency.name}"></td>
                             <td th:text="${detail.size}+' '+${detail.unitSize}"></td>
                             <th class="form-group">
                                 <form th:action="'/detail/'+${detail.id}+'/delete'" method="post">

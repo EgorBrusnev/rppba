@@ -40,7 +40,7 @@
                 </thead>
                 <tbody>
                 <th:block th:each="detail: ${details}">
-                    <tr>
+                    <tr th:if="${not detail.isEmptyStage()}">
                         <td th:text="${detail.name}"></td>
                         <td th:text="${detail.material}"></td>
                         <td th:text="${detail.pricePerUnit}"></td>
@@ -53,7 +53,23 @@
                             </th:block>
                         </td>
                     </tr>
+                    <tr th:if="${detail.isEmptyStage()}">
+                        <td>Ничего</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td th:text="${detail.stageName}+' ('+${detail.stageDuration}+' '+${detail.stageDurationUnit.getExt()}+')'"></td>
+                        <td></td>
+                    </tr>
                 </th:block>
+                <!--<tr>-->
+                <!--<td></td>-->
+                <!--<td></td>-->
+                <!--<td th:text="'qweqweqw'"></td>-->
+                <!--<td th:text="${totalCount}"></td>-->
+                <!--<td th:text="${totalTime}"></td>-->
+                <!--<td></td>-->
+                <!--</tr>-->
                 </tbody>
             </table>
         </div>

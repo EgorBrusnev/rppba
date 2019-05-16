@@ -10,5 +10,7 @@ import java.util.List;
 public interface ProductDetailRepository extends CrudRepository<ProductDetail, Integer> {
     List<ProductDetail> findByProduct_Id(int productId);
 
+    List<ProductDetail> findByStage_IdAndProduct_Id(int stageId, int productId);
+
     ProductDetail findByProduct_IdAndDetail_IdAndStage_Id(int productId, int detailId, int stageId);
 }

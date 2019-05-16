@@ -16,6 +16,10 @@
                 <th>End date</th>
                 <th>Employee</th>
                 <th>Products</th>
+                <th>Planned products</th>
+                <th>Products in progress</th>
+                <th>Done products</th>
+                <th>Status</th>
             </tr>
             </thead>
             <tbody>
@@ -36,6 +40,43 @@
                             </tbody>
                         </table>
                     </td>
+                    <td>
+                        <table class="table">
+                            <tbody>
+                            <th:block th:each="planOrder: ${plan.plannedOrders}">
+                                <tr>
+                                    <td th:text="${planOrder.product.name}"></td>
+                                    <td th:text="${planOrder.productQty}"></td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td>
+                        <table class="table">
+                            <tbody>
+                            <th:block th:each="planOrder: ${plan.inProgressOrders}">
+                                <tr>
+                                    <td th:text="${planOrder.product.name}"></td>
+                                    <td th:text="${planOrder.productQty}"></td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td>
+                        <table class="table">
+                            <tbody>
+                            <th:block th:each="planOrder: ${plan.doneOrders}">
+                                <tr>
+                                    <td th:text="${planOrder.product.name}"></td>
+                                    <td th:text="${planOrder.productQty}"></td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td th:text="${plan.isReady() ? 'Ready' : 'In progress'}"></td>
                 </tr>
             </th:block>
             </tbody>

@@ -17,7 +17,7 @@
                         <th>Name</th>
                         <th>Stage number</th>
                         <th>Stage time</th>
-                        <th>Detail quantity</th>
+                        <!--<th>Detail quantity</th>-->
                         <th></th>
                     </tr>
                     </thead>
@@ -27,10 +27,10 @@
                             <td th:text="${stage.name}"></td>
                             <td th:text="${stage.stageNumber}"></td>
                             <td th:text="${stage.time}+' '+${stage.timeUnit.getExt()}"></td>
-                            <td th:text="${stage.quantity}+' '+${stage.unitQty}"></td>
+                            <!--<td th:text="${stage.quantity}+' '+${stage.unitQty}"></td>-->
                             <th class="form-group">
                                 <form th:action="'/stage/'+${stage.id}+'/delete'" method="post">
-                                    <input type="submit" class="btn btn-primary" value="Remove detail">
+                                    <input type="submit" class="btn btn-primary" value="Remove stage">
                                 </form>
                             </th>
                         </tr>
@@ -59,12 +59,12 @@
                         </select>
                     </label>
                 </label>
-                <label>Quantity
-                    <input class="form-control" type="number" name="quantity"/>
-                    <label>Size unit
-                        <input class="form-control" type="text" name="unitQty"/>
-                    </label>
-                </label>
+                <!--<label>Quantity-->
+                    <!--<input class="form-control" type="number" name="quantity"/>-->
+                    <!--<label>Size unit-->
+                        <!--<input class="form-control" type="text" name="unitQty"/>-->
+                    <!--</label>-->
+                <!--</label>-->
                 <input type="submit" value="Add stage">
             </form>
         </div>

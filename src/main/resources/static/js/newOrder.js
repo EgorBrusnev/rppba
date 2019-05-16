@@ -8,7 +8,7 @@ $("#request-form").submit((e) => {
 $("#add-request").click(e => {
     e.preventDefault();
     let object = {};
-    let select = $("form select");
+    let select = $("form select option:selected");
     let productId = select.val();
     let productText = select.text().trim();
     let count = $("input[name='qty']").val();

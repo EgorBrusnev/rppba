@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/*.css", "/*.js", "/login").permitAll()
                 .antMatchers("/product/**", "/stage/**").hasAuthority(EmployeePosition.TECHNOLOGIST.name())
-                .antMatchers("/plan/**", "/order/plan/**").hasAuthority(EmployeePosition.DISPATCHER.name())
+                .antMatchers("/plan/**", "/order/plan/**", "/order/new").hasAuthority(EmployeePosition.DISPATCHER.name())
                 .antMatchers("/order/**", "/order/*/progress").hasAnyAuthority(EmployeePosition.MASTER_SHOP.name(), EmployeePosition.MASTER_ASSAMBLY.name())
                 .antMatchers("/order/*/done").hasAuthority(EmployeePosition.MASTER_SHOP.name())
                 .anyRequest().authenticated()

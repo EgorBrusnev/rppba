@@ -1,7 +1,10 @@
 package by.rppba.production.controller;
 
 import by.rppba.production.dto.ProductDto;
+import by.rppba.production.dto.ProductStageDto;
 import by.rppba.production.dto.SaveDetailDto;
+import by.rppba.production.dto.StageDto;
+import by.rppba.production.model.Product;
 import by.rppba.production.model.ProductDetail;
 import by.rppba.production.model.Stage;
 import by.rppba.production.service.DetailService;
@@ -14,8 +17,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 @Controller
@@ -45,8 +51,20 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public String product(@PathVariable Integer id, Model model) {
-        model.addAttribute(productService.getById(id));
-        model.addAttribute("stages", stageService.getAllStages());
+        Product product = productService.getById(id);
+        model.addAttribute(product);
+        List<StageDto> stages = stageService.getAllStages();
+        List<ProductStageDto> stageList = new ArrayList<>();
+        Map<Integer, List<ProductDetail>> map = product.getDetails().stream().collect(Collectors.groupingBy(it -> it.getStage().getId()));
+        map.forEach((integer, productDetails) -> {
+            StageDto stage = stages.stream().filter(it -> it.getId() == integer).findFirst().orElse(null);
+            if (stage != null) {
+                stageList.add(new ProductStageDto(stage.getId(), stage.getName(), stage.getStageNumber(), productDetails));
+            }
+        });
+        stageList.sort(Comparator.comparing(ProductStageDto::getStageNumber));
+        model.addAttribute("stageList", stageList);
+        model.addAttribute("stages", stages);
         model.addAttribute("details", detailService.getAllDetails());
         model.addAttribute("ext", extenstionsService.getAllAsMap());
         return "singleProduct";
@@ -76,12 +94,18 @@ public class ProductController {
                                      @RequestParam String unit,
                                      Model model) {
         productService.addDetail(id, detail, count, unit, stage);
-        return product(id, model);
+        return "redirect:/product/" + id;
     }
 
     @PostMapping("/{id}/detail/delete")
     public String deleteDetail(@PathVariable("id") int productId, @RequestParam Integer detailId, Model model) {
         productService.deleteDetail(detailId);
-        return product(productId, model);
+        return "redirect:/product/" + productId;
+    }
+
+    @PostMapping("/{id}/empty")
+    public String addEmptyStage(@PathVariable int id, @RequestParam Integer stage) {
+        productService.addDetail(id, null, 0, "0", stage);
+        return "redirect:/product/" + id;
     }
 }

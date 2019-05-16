@@ -1,10 +1,12 @@
 package by.rppba.production.model;
 
 import by.rppba.production.dto.DetailDto;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 import javax.persistence.*;
 
 @Entity
+@JsonAutoDetect
 public class ProductDetail {
     @Id
     @GeneratedValue
@@ -81,6 +83,10 @@ public class ProductDetail {
     }
 
     public DetailDto toDto() {
-        return new DetailDto(detail.getId(), detail.getName(), detail.getMaterial(), detail.getQuantity(), stage.getDetailQty(), detail.getUnitPrice(), stage.getName(), stage.getStageTime(), stage.getStageTimeUnit());
+        if (detail != null) {
+            return new DetailDto(detail.getId(), detail.getName(), detail.getMaterial(), detail.getQuantity(), detailQty, detail.getUnitPrice(), stage.getName(), stage.getStageTime(), stage.getStageTimeUnit());
+        } else {
+            return new DetailDto(detailQty, stage.getName(), stage.getStageTime(), stage.getStageTimeUnit());
+        }
     }
 }

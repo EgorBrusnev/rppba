@@ -9,8 +9,7 @@ public class User {
     private int id;
     private String username;
     private String password;
-    @OneToOne(targetEntity = Employee.class, cascade = CascadeType.ALL)
-    @JoinColumn(unique = true, name = "employee_id")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Employee employee;
 
     public int getId() {

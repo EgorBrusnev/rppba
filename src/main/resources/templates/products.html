@@ -17,7 +17,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Model</th>
-                    <th>Details</th>
+                    <!--<th>Details</th>-->
                     <th></th>
                 </tr>
                 </thead>
@@ -26,11 +26,11 @@
                     <tr>
                         <td th:text="${product.getName()}"></td>
                         <td th:text="${product.getModel()}"></td>
-                        <td>
-                            <th:block th:each="detail : ${product.getDetails()}">
-                                <span th:text="${detail.getDetail().getName()} + ' : ' + ${detail.getDetail().getQuantity()}"></span>
-                            </th:block>
-                        </td>
+                        <!--<td>-->
+                            <!--<th:block th:each="detail : ${product.getDetails()}">-->
+                                <!--<span th:text="${detail.getDetail().getName()} + ' : ' + ${detail.getDetail().getQuantity()}"></span>-->
+                            <!--</th:block>-->
+                        <!--</td>-->
                         <td>
                             <a th:href="'/product/'+${product.getId()}" class="btn btn-primary">More</a>
                         </td>

@@ -10,6 +10,7 @@ import by.rppba.production.model.Product;
 import by.rppba.production.model.ProductDetail;
 import by.rppba.production.model.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,11 +48,17 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public void addDetail(int productId, int detailId, int count, String unit, int stageId) {
+    public void addDetail(int productId, @Nullable Integer detailId, int count, String unit, int stageId) {
         Product product = productRepository.findById(productId).orElse(null);
-        Detail detail = detailRepository.findById(detailId).orElse(null);
+        Detail detail = null;
+        ProductDetail productDetail = null;
+        if (detailId != null) {
+            detail = detailRepository.findById(detailId).orElse(null);
+            productDetail = productDetailRepository.findByProduct_IdAndDetail_IdAndStage_Id(productId, detailId, stageId);
+        } else if (!productDetailRepository.findByStage_IdAndProduct_Id(stageId, productId).isEmpty()) {
+            return;
+        }
         Stage stage = stageRepository.findById(stageId).orElse(null);
-        ProductDetail productDetail = productDetailRepository.findByProduct_IdAndDetail_IdAndStage_Id(productId, detailId, stageId);
         if (productDetail != null) {
             productDetail.setDetailQty(productDetail.getDetailQty() + count);
         } else {

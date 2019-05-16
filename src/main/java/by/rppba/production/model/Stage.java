@@ -14,7 +14,8 @@ public class Stage {
     @GeneratedValue
     private int id;
     private String name;
-    @Column(name = "detail_qty")
+    //    @Column(name = "detail_qty")
+    @Transient
     private int detailQty;
     @Column(name = "unit_qty")
     private String unitQty;

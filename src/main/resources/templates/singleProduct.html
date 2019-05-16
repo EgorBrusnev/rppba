@@ -73,28 +73,66 @@
                 <label>Model
                     <input class="form-control" type="text" th:value="${product.getModel()}">
                 </label>
-                <h3 class="h3">Details:</h3>
+                <h3 class="h3">Stages:</h3>
                 <div class="container">
+                    <!--<table class="table table-primary">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                    <!--<th>Detail</th>-->
+                    <!--<th>Count</th>-->
+                    <!--<th>Stage</th>-->
+                    <!--<th>Stage number</th>-->
+                    <!--<th></th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<th:block th:each="detail: ${product.details}">-->
+                    <!--<tr>-->
+                    <!--<td th:text="${detail.detail.name}"></td>-->
+                    <!--<td th:text="${detail.detailQty}+' '+${detail.unit}"></td>-->
+                    <!--<td th:text="${detail.stage.name}"></td>-->
+                    <!--<td th:text="${detail.stageNumber}"></td>-->
+                    <!--<td>-->
+                    <!--<form method="post" th:action="'/product/'+${product.id}+'/detail/delete'">-->
+                    <!--<input name="detailId" type="hidden" th:value="${detail.id}">-->
+                    <!--<input type="submit" value="Delete">-->
+                    <!--</form>-->
+                    <!--</td>-->
+                    <!--</tr>-->
+                    <!--</th:block>-->
+                    <!--</tbody>-->
+                    <!--</table>-->
                     <table class="table table-primary">
                         <thead>
                         <tr>
-                            <th>Detail</th>
-                            <th>Count</th>
-                            <th>Stage</th>
+                            <th>Name</th>
+                            <th>StageNumber</th>
+                            <!--<th>Stage</th>-->
+                            <th>Details</th>
+                            <!--<th>Stage number</th>-->
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <th:block th:each="detail: ${product.details}">
+                        <th:block th:each="stage: ${stageList}">
                             <tr>
-                                <td th:text="${detail.detail.name}"></td>
-                                <td th:text="${detail.detailQty}+' '+${detail.unit}"></td>
-                                <td th:text="${detail.stage.name}"></td>
+                                <td th:text="${stage.name}"></td>
+                                <td th:text="${stage.stageNumber}"></td>
                                 <td>
-                                    <form method="post" th:action="'/product/'+${product.id}+'/detail/delete'">
-                                        <input name="detailId" type="hidden" th:value="${detail.id}">
-                                        <input type="submit" value="Delete">
-                                    </form>
+                                    <th:block th:each="detail: ${stage.detailList}">
+                                        <table>
+                                            <tr>
+                                                <td th:text="${detail.detail} ? ${detail.detail.name} + ' '+ ${detail.detailQty} + ' '+${detail.unit} : ''"></td>
+                                                <td>
+                                                    <form method="post"
+                                                          th:action="'/product/'+${product.id}+'/detail/delete'">
+                                                        <input name="detailId" type="hidden" th:value="${detail.id}">
+                                                        <input type="submit" value="Delete">
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </th:block>
                                 </td>
                             </tr>
                         </th:block>
@@ -127,6 +165,17 @@
                     </select>
                 </label>
                 <input type="submit" class="btn btn-primary" value="Add detail">
+            </form>
+            <hr>
+            <form th:action="'/product/'+${product.id}+'/empty'" method="post">
+                <label>Stage
+                    <select name="stage" class="form-control">
+                        <th:block th:each="stage: ${stages}">
+                            <option th:value="${stage.id}" th:text="${stage.name}"></option>
+                        </th:block>
+                    </select>
+                </label>
+                <input type="submit" class="btn-primary btn" value="Add empty stage">
             </form>
         </div>
     </div>
